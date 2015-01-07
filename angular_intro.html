@@ -9,15 +9,47 @@
 
         var myApp = angular.module('myApp', []);
 
-        myApp.controller('MyController', function ($scope) {
+        myApp.controller('MyController', function ($scope, $http) {
             $scope.message = 'Hello World!';
+            $scope.numbers = [1,2,3,4,5,6];
+
+            $scope.name = 'Andy';
+            $scope.search = '';
+            $scope.makeAjaxCall = function (event) {
+                if (event.keyCode === 13) {
+                    $http.get('https://api.github.com/search/repositories?q=' + $scope.search).success(function (data) {
+                        $scope.data = data;
+                        console.log(data);
+                    });
+                }
+            };
+
+            $scope.country = 'USA';
+
         });
 
     </script>
 </head>
 <body>
     <div ng-controller="MyController">
-        {{message}}
+
+        <select ng-model="country">
+            <option value="USA">USA</option>
+            <option value="China">China</option>
+            <option value="Iran">Iran</option>
+        </select>
+
+        <input type="text" ng-model="country"/>
+
+        <ul>
+            <li ng-repeat="num in numbers">{{num}}</li>
+        </ul>
+        <input type="text" ng-model="search" placeholder="search for repositories" ng-keydown="makeAjaxCall($event)"/>
+        <input type="text" ng-model="name"/>
+        <h1>Repositories from Github Search</h1>
+        <ul>
+            <li ng-repeat="item in data.items">{{item.full_name}}</li>
+        </ul>
     </div>
 </body>
 </html>
