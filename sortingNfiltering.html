@@ -9,15 +9,14 @@
 
         angular.module('myApp', []).controller('MyController', function ($scope) {
             $scope.states = states;
-            $scope.query = '';
         });
 
     </script>
 </head>
-<body>
+<body ng-controller="MyController">
     <input type="text" ng-model="query"/>
-    <ul ng-controller="MyController">
-        <li ng-repeat="state in states | filter:query">{{state}}</li>
+    <ul>
+        <li ng-repeat="(key, value) in states | filter:query">{{value}}</li>
     </ul>
 </body>
 </html>
